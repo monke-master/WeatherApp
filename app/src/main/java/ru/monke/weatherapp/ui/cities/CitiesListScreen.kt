@@ -1,6 +1,6 @@
 package ru.monke.weatherapp.ui.cities
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -13,57 +13,77 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import ru.monke.weatherapp.domain.City
 import ru.monke.weatherapp.domain.mockedCities
 import ru.monke.weatherapp.ui.theme.WeatherAppTheme
 
+private const val TAG = "CitiesListScreen"
+
 @Composable
 fun CitiesListScreen(
-    citiesList: List<City>
+    viewModel: CitiesListViewModel = hiltViewModel()
 ) {
+    val state = viewModel.state
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        CitiesList(citiesList)
+        if (state.value.isLoading) {
+            LoadingIndicator()
+        } else if (!state.value.errorMessage.isNullOrEmpty()){
+            Text(text = state.value.errorMessage!!)
+        } else {
+            CitiesList(state.value)
+        }
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
 private fun ScreenPreview() {
-    WeatherAppTheme {
-        CitiesListScreen(mockedCities)
-    }
+//    WeatherAppTheme {
+//        CitiesListScreen(CitiesListViewModel())
+//    }
+}
+
+
+@Composable
+fun LoadingIndicator() {
+    CircularProgressIndicator(
+        modifier = Modifier.width(64.dp),
+        color = MaterialTheme.colorScheme.secondary,
+        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+    )
 }
 
 
 @Composable
 fun CitiesList(
-    citiesList: List<City>
+    state: CitiesState
 ) {
+    val citiesList = state.citiesList
+    Log.d(TAG, "CitiesList: " + state.citiesList.filter { it.name.isEmpty() }.joinToString(separator = " "))
     Box(Modifier.fillMaxSize()) {
         val groupedNames = remember(citiesList) {
-            citiesList.groupBy { it.name.first().toString() }
+            citiesList.groupBy { it.name[0].toString() }
         }
         val startIndexes = remember(citiesList) {
             getStartIndexes(groupedNames.entries)
