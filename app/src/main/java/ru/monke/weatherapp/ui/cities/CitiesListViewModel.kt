@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.monke.weatherapp.domain.GetCitiesListUseCase
-import ru.monke.weatherapp.domain.mockedCities
 import javax.inject.Inject
 
 private const val TAG = "CitiesListViewModel"

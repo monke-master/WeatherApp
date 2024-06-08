@@ -15,4 +15,10 @@ class CityRepositoryImpl @Inject constructor(
 
 }
 
-fun CityRemote.toDomain(): City = City(city)
+fun CityRemote.toDomain(): City =
+    City(
+        name = city,
+        id = id,
+        longitude = longitude,
+        latitude = latitude
+    )

@@ -1,6 +1,5 @@
 package ru.monke.weatherapp.ui.cities
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -46,7 +44,8 @@ private const val TAG = "CitiesListScreen"
 
 @Composable
 fun CitiesListScreen(
-    viewModel: CitiesListViewModel = hiltViewModel()
+    viewModel: CitiesListViewModel = hiltViewModel(),
+    onCityItemClicked: (City) -> Unit
 ) {
     val state = viewModel.state
     Surface(
@@ -57,7 +56,7 @@ fun CitiesListScreen(
         } else if (!state.value.errorMessage.isNullOrEmpty()){
             ErrorText(viewModel = viewModel)
         } else {
-            CitiesList(state.value.citiesList)
+            CitiesList(state.value.citiesList, onCityItemClicked)
         }
     }
 }
@@ -66,7 +65,7 @@ fun CitiesListScreen(
 @Composable
 private fun ListPreview() {
     WeatherAppTheme {
-        CitiesList(citiesList = mockedCities)
+        CitiesList(citiesList = mockedCities, {})
     }
 }
 
@@ -104,7 +103,8 @@ fun LoadingIndicator() {
 
 @Composable
 fun CitiesList(
-    citiesList: List<City>
+    citiesList: List<City>,
+    onCityItemClicked: (City) -> Unit
 ) {
     Box(Modifier.fillMaxSize()) {
         val groupedNames = remember(citiesList) {
@@ -128,10 +128,11 @@ fun CitiesList(
             state = listState,
         ) {
             itemsIndexed(citiesList) { index, city ->
-                NameItem(
-                    city.name,
+                CityItem(
+                    city,
                     showCharHeader = startIndexes.contains(index) && listState.firstVisibleItemIndex != index,
-                    commonModifier
+                    commonModifier,
+                    onCityItemClicked
                 )
             }
         }
@@ -153,10 +154,11 @@ fun CitiesList(
 }
 
 @Composable
-fun NameItem(
-    name: String,
+fun CityItem(
+    city: City,
     showCharHeader: Boolean,
-    modifier: Modifier
+    modifier: Modifier,
+    onCityItemClicked: (City) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -165,19 +167,19 @@ fun NameItem(
             )
             .height(56.dp)
             .fillMaxWidth()
-            .clickable { },
+            .clickable { onCityItemClicked(city) },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showCharHeader) {
             LetterHeader(
-                char = name.first().toString(),
+                char = city.name.first().toString(),
                 modifier = modifier
             )
         } else {
             Spacer(modifier = modifier)
         }
         Text(
-            text = name,
+            text = city.name,
             modifier = Modifier
                 .padding(
                     horizontal = 16.dp

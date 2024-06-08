@@ -1,5 +1,8 @@
 package ru.monke.weatherapp.domain
 
 data class City(
-    val name: String
+    val id: String,
+    val name: String,
+    val longitude: Float,
+    val latitude: Float,
 )
