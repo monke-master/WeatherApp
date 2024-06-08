@@ -1,8 +1,8 @@
-package ru.monke.weatherapp.data
+package ru.monke.weatherapp.data.city
 
 import android.os.Parcel
 import android.os.Parcelable
-import ru.monke.weatherapp.domain.City
+import ru.monke.weatherapp.domain.city.City
 
 class CityParcelable() : Parcelable {
     lateinit var city: City

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
-import ru.monke.weatherapp.data.CityParcelable
+import ru.monke.weatherapp.data.city.CityParcelable
 import ru.monke.weatherapp.ui.cities.CitiesListScreen
 import ru.monke.weatherapp.ui.weather.WeatherScreen
 
@@ -27,7 +27,7 @@ fun AppNavigation() {
             route = "$WEATHER_ROUTE?$CITY_ARG={$CITY_ARG}",
             arguments = listOf(navArgument(CITY_ARG) { type = CityNavType(false) })
         ) { navBackStackEntry ->
-            val city = navBackStackEntry.arguments?.getParcelable<CityParcelable>(CITY_ARG)?.city
+            val city = navBackStackEntry.arguments?.getParcelable<CityParcelable>(CITY_ARG)?.city!!
             WeatherScreen(city)
         }
     }

@@ -3,9 +3,7 @@ package ru.monke.weatherapp.ui.navigation
 import android.os.Bundle
 import androidx.navigation.NavType
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import ru.monke.weatherapp.data.CityParcelable
-import ru.monke.weatherapp.domain.City
+import ru.monke.weatherapp.data.city.CityParcelable
 
 class CityNavType(override val isNullableAllowed: Boolean): NavType<CityParcelable>(isNullableAllowed) {
 

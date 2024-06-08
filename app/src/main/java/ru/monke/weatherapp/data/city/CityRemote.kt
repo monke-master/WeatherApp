@@ -1,4 +1,4 @@
-package ru.monke.weatherapp.data
+package ru.monke.weatherapp.data.city
 
 data class CityRemote(
     val id: String,

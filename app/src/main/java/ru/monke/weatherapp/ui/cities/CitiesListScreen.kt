@@ -1,9 +1,7 @@
 package ru.monke.weatherapp.ui.cities
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,8 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,17 +23,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ru.monke.weatherapp.R
-import ru.monke.weatherapp.domain.City
-import ru.monke.weatherapp.domain.GetCitiesListUseCase
+import ru.monke.weatherapp.domain.city.City
 import ru.monke.weatherapp.domain.mockedCities
+import ru.monke.weatherapp.ui.common.ErrorText
+import ru.monke.weatherapp.ui.common.LoadingIndicator
 import ru.monke.weatherapp.ui.theme.WeatherAppTheme
 
 private const val TAG = "CitiesListScreen"
@@ -54,7 +49,7 @@ fun CitiesListScreen(
         if (state.value.isLoading) {
             LoadingIndicator()
         } else if (!state.value.errorMessage.isNullOrEmpty()){
-            ErrorText(viewModel = viewModel)
+            ErrorText(viewModel::fetchData)
         } else {
             CitiesList(state.value.citiesList, onCityItemClicked)
         }
@@ -81,25 +76,9 @@ private fun LoadingPreview() {
 @Composable
 private fun ErrorPreview() {
     WeatherAppTheme {
-        ErrorText(CitiesListViewModel(GetCitiesListUseCase(FakeRepository())))
+        ErrorText({})
     }
 }
-
-
-@Composable
-fun LoadingIndicator() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(48.dp)
-        )
-    }
-}
-
-
-
 
 @Composable
 fun CitiesList(
@@ -205,22 +184,6 @@ fun LetterHeader(char: String, modifier: Modifier = Modifier) {
                 ),
             fontSize = 24.sp,
         )
-    }
-}
-
-@Composable
-fun ErrorText(
-    viewModel: CitiesListViewModel
-) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = stringResource(id = R.string.error_text))
-        Button(onClick = { viewModel.fetchData() }) {
-            Text(text = stringResource(id = R.string.update))
-        }
     }
 }
 

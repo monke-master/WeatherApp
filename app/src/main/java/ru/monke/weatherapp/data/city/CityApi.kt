@@ -1,4 +1,4 @@
-package ru.monke.weatherapp.data
+package ru.monke.weatherapp.data.city
 
 import retrofit2.http.GET
 

@@ -1,7 +1,7 @@
 package ru.monke.weatherapp.ui.cities
 
-import ru.monke.weatherapp.domain.City
-import ru.monke.weatherapp.domain.CityRepository
+import ru.monke.weatherapp.domain.city.City
+import ru.monke.weatherapp.domain.city.CityRepository
 import ru.monke.weatherapp.domain.mockedCities
 
 class FakeRepository(

@@ -1,4 +1,4 @@
-package ru.monke.weatherapp.domain
+package ru.monke.weatherapp.domain.city
 
 interface CityRemoteDataSource {
 

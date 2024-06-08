@@ -24,12 +24,24 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "WEATHER_BASE_URL",
+                "\"https://api.openweathermap.org/data/2.5/weather/\"")
+            buildConfigField("String", "CITIES_BASE_URL",
+                "\"https://gist.githubusercontent.com/Stronger197/764f9886a1e8392ddcae2521437d5a3b/raw/65164ea1af958c75c81a7f0221bead610590448e/\"")
+            buildConfigField("String", "AUTH_KEY", "\"ee94b6929fed4127da022b152b533710\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "WEATHER_BASE_URL",
+                "\"https://api.openweathermap.org/data/2.5/weather/\"")
+            buildConfigField("String", "CITIES_BASE_URL",
+                "\"https://gist.githubusercontent.com/Stronger197/764f9886a1e8392ddcae2521437d5a3b/raw/65164ea1af958c75c81a7f0221bead610590448e/\"")
+            buildConfigField("String", "AUTH_KEY", "\"ee94b6929fed4127da022b152b533710\"")
         }
     }
     compileOptions {
@@ -41,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        android.buildFeatures.buildConfig = true
     }
     packaging {
         resources {
@@ -73,6 +86,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation (libs.gson)
+    implementation (libs.logging.interceptor)
 }
 
 kapt {

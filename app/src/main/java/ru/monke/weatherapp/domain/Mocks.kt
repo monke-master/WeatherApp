@@ -1,5 +1,7 @@
 package ru.monke.weatherapp.domain
 
+import ru.monke.weatherapp.domain.city.City
+
 val mockedCities = listOf(
     City(id = "1",
         name = "Москва",
