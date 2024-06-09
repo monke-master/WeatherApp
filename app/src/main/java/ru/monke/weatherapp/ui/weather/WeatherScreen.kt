@@ -69,10 +69,12 @@ private fun WeatherInfo(
             modifier = Modifier.padding(top = 40.dp),
             text = "${floor(weather.temp).toInt()}°С",
             overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
             fontSize = 57.sp)
         Text(
             text = city.name,
             overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
             fontSize = 32.sp)
         Spacer(modifier = Modifier.weight(1f))
         UpdateButton(

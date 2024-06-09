@@ -14,27 +14,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.monke.weatherapp.R
+import ru.monke.weatherapp.ui.theme.ButtonTextStyle
 import ru.monke.weatherapp.ui.theme.WeatherAppTheme
 
 @Composable
 fun ErrorText(
+    modifier: Modifier = Modifier,
     onUpdateBtnClicked: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(id = R.string.error_text),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
+            style = ButtonTextStyle,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
-        UpdateButton(onUpdateBtnClicked, Modifier.padding(top = 42.dp))
+        UpdateButton(Modifier.padding(top = 42.dp), onUpdateBtnClicked)
     }
 }
 
@@ -52,8 +56,8 @@ fun LoadingIndicator() {
 
 @Composable
 fun UpdateButton(
+    modifier: Modifier = Modifier,
     onUpdateBtnClicked: () -> Unit,
-    modifier: Modifier
 ) {
     Button(
         modifier = modifier,
@@ -61,7 +65,9 @@ fun UpdateButton(
         Text(
             text = stringResource(id = R.string.update),
             fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
@@ -78,6 +84,6 @@ private fun LoadingPreview() {
 @Composable
 private fun ErrorPreview() {
     WeatherAppTheme {
-        ErrorText({})
+        ErrorText() {}
     }
 }

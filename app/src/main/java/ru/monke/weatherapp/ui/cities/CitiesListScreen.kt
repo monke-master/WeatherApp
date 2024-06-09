@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +51,7 @@ fun CitiesListScreen(
         if (state.value.isLoading) {
             LoadingIndicator()
         } else if (!state.value.errorMessage.isNullOrEmpty()){
-            ErrorText(viewModel::fetchData)
+            ErrorText(onUpdateBtnClicked = viewModel::fetchData)
         } else {
             CitiesList(state.value.citiesList, onCityItemClicked)
         }
@@ -71,13 +72,13 @@ private fun CitiesList(
     onCityItemClicked: (City) -> Unit
 ) {
     Box(Modifier.fillMaxSize()) {
-        val groupedNames = remember(citiesList) {
+        val groupedNames = rememberSaveable(citiesList) {
             citiesList.groupBy { it.name[0].toString() }
         }
-        val startIndexes = remember(citiesList) {
+        val startIndexes = rememberSaveable(citiesList) {
             getStartIndexes(groupedNames.entries)
         }
-        val endIndexes = remember(citiesList) {
+        val endIndexes = rememberSaveable(citiesList) {
             getEndIndexes(groupedNames.entries)
         }
         val commonModifier = Modifier
