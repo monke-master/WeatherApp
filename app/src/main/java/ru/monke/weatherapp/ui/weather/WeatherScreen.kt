@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,11 +72,13 @@ private fun WeatherInfo(
             text = "${floor(weather.temp).toInt()}°С",
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
+            textAlign = TextAlign.Center,
             fontSize = 57.sp)
         Text(
             text = city.name,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
+            textAlign = TextAlign.Center,
             fontSize = 32.sp)
         Spacer(modifier = Modifier.weight(1f))
         UpdateButton(
