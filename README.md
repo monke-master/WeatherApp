@@ -16,4 +16,4 @@
 
 Для Dependecy Injection был использован Dagger-Hilt за счет его удобной интеграции с Compose
 
-Приложение сожержит два Compose-экрана: CitiesListScreen и WeatherScreen, одну Activity WeatherAppMainActivity. 
+Приложение содержит два Compose-экрана: CitiesListScreen и WeatherScreen, одну Activity WeatherAppMainActivity. 
