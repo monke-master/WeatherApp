@@ -33,11 +33,7 @@ class CitiesListViewModel @Inject constructor(
                 return@launch
             }
 
-            var citiesList = res.getOrNull() ?: emptyList()
-            // По каким-то причинам, в json-е есть города с пустым названием
-            citiesList = citiesList
-                                .filter { it.name.isNotEmpty() }
-                                .sortedBy { it.name }
+            val citiesList = res.getOrNull() ?: emptyList()
             state.value = state.value.copy(citiesList = citiesList, isLoading = false)
         }
     }

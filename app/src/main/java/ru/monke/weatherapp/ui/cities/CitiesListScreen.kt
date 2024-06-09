@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -60,28 +61,12 @@ fun CitiesListScreen(
 @Composable
 private fun ListPreview() {
     WeatherAppTheme {
-        CitiesList(citiesList = mockedCities, {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun LoadingPreview() {
-    WeatherAppTheme {
-        LoadingIndicator()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ErrorPreview() {
-    WeatherAppTheme {
-        ErrorText({})
+        CitiesList(citiesList = mockedCities.sortedBy { it.name }, {})
     }
 }
 
 @Composable
-fun CitiesList(
+private fun CitiesList(
     citiesList: List<City>,
     onCityItemClicked: (City) -> Unit
 ) {
@@ -95,12 +80,17 @@ fun CitiesList(
         val endIndexes = remember(citiesList) {
             getEndIndexes(groupedNames.entries)
         }
-        val commonModifier = Modifier.width(50.dp)
+        val commonModifier = Modifier
+            .size(40.dp)
+            .padding(start = 8.dp)
         val listState = rememberLazyListState()
         val moveStickyHeader by remember {
             derivedStateOf {
                 endIndexes.contains(listState.firstVisibleItemIndex + 1)
             }
+        }
+        val firstVisibleItemIndex by remember {
+            derivedStateOf { listState.firstVisibleItemIndex }
         }
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -109,22 +99,22 @@ fun CitiesList(
             itemsIndexed(citiesList) { index, city ->
                 CityItem(
                     city,
-                    showCharHeader = startIndexes.contains(index) && listState.firstVisibleItemIndex != index,
+                    showCharHeader = startIndexes.contains(index) && firstVisibleItemIndex != index,
                     commonModifier,
                     onCityItemClicked
                 )
             }
         }
         LetterHeader(
-            char = citiesList[listState.firstVisibleItemIndex].name.first().toString(),
+            char = citiesList[firstVisibleItemIndex].name.first().toString(),
             modifier = commonModifier.then(
                 if (moveStickyHeader) {
                     Modifier.offset {
-                        IntOffset(0, -listState.firstVisibleItemScrollOffset)
+                        IntOffset(0, -listState.firstVisibleItemScrollOffset + ((16).dp).toPx().toInt())
                     }
                 } else {
                     Modifier.offset {
-                        IntOffset(0, ((14).dp).toPx().toInt())
+                        IntOffset(0, ((16).dp).toPx().toInt())
                     }
                 }
             )
@@ -133,7 +123,7 @@ fun CitiesList(
 }
 
 @Composable
-fun CityItem(
+private fun CityItem(
     city: City,
     showCharHeader: Boolean,
     modifier: Modifier,
@@ -157,22 +147,31 @@ fun CityItem(
         } else {
             Spacer(modifier = modifier)
         }
-        Text(
-            text = city.name,
-            modifier = Modifier
-                .padding(
-                    horizontal = 16.dp
-                ),
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        CityNameText(name = city.name)
     }
 }
 
 @Composable
-fun LetterHeader(char: String, modifier: Modifier = Modifier) {
+private fun CityNameText(
+    name: String
+) {
+    Text(
+        text = name,
+        modifier = Modifier
+            .padding(
+                start = 24.dp,
+                end = 16.dp)
+            .fillMaxWidth(),
+        overflow = TextOverflow.Ellipsis,
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 1
+    )
+}
+
+@Composable
+private fun LetterHeader(char: String, modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier.size(40.dp),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -183,6 +182,8 @@ fun LetterHeader(char: String, modifier: Modifier = Modifier) {
                     end = 8.dp,
                 ),
             fontSize = 24.sp,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1
         )
     }
 }
