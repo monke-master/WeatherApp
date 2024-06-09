@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -79,7 +80,9 @@ private fun WeatherInfo(
         Spacer(modifier = Modifier.weight(1f))
         UpdateButton(
             onUpdateBtnClicked = onUpdateBtnClicked,
-            modifier = Modifier.padding(bottom = 36.dp))
+            modifier = Modifier
+                .padding(bottom = 36.dp)
+                .systemBarsPadding())
     }
 }
 

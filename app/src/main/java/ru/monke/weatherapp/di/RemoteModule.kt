@@ -22,9 +22,8 @@ class RemoteModule {
     }
 
     @Provides
-    fun provideOkHttpClient(interceptorsSet: Set<@JvmSuppressWildcards Interceptor>): OkHttpClient {
+    fun provideOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
-        interceptorsSet.forEach(builder::addInterceptor)
         return builder.build()
     }
 }
